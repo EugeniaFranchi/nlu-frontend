@@ -4,6 +4,7 @@ import VerNLUs from "./VerNLUs";
 import AgregarNLU from "./AgregarNLU";
 import EditarNLU from "./EditarNLU";
 import EliminarNLU from "./EliminarNLU";
+import LeerNombre from "./LeerPorNombre";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import logo from './img/logo.png';
@@ -31,6 +32,10 @@ const NavbarList = () => {
         <br/>
         <Box m={0} pt={0}>
           <Button component={Link} to="/eliminar-nlu" variant="contained">Eliminar NLU</Button>
+        </Box>
+        <br/>
+        <Box m={0} pt={0}>
+          <Button component={Link} to="/leer-nlu" variant="contained">Leer NLU</Button>
         </Box>
       </div>
     )
