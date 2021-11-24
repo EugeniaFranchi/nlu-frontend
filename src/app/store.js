@@ -1,9 +1,11 @@
 import { createStore, combineReducers } from "redux";
-import { editorReducer } from "./reducers/EditorReducer";
+import { nluReducer } from "./reducers/NluReducer";
+import { stateReducer } from "./reducers/StateReducer";
 import { composeWithDevTools } from "redux-devtools-extension";
 
 const reducer = combineReducers({
-    editor: editorReducer
+    nlu: nluReducer,
+    state: stateReducer
   })
 
 export default createStore(reducer, composeWithDevTools());

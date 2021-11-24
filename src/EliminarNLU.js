@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import * as actions from "./app/actions/EditorActions";
+import * as nluActions from "./app/actions/NluActions";
+import * as stateActions from "./app/actions/StateActions";
 import FormName from "./FormName";
 import Alert from "@mui/material/Alert";
 import axios from "axios";
@@ -9,52 +10,9 @@ import "./styles.css";
 
 
 const EliminarNLU = () => {
-
-  const [state, setState] = useState('');
-  const [foundNlu, setFoundNlu] = useState(false);
   const dispatch = useDispatch();
-  const id = useSelector((store) => store.editor.id);
-  const name = useSelector((store) => store.editor.name);
-
-  // igual que en EditarNLU.js
-  const searchNLU = (event) => {
-    
-    event.preventDefault();
-
-    try{
-
-      axios
-      .get(url + "nlu_structure_name?name="+ name)
-      .then(response => {
-                
-        if(!response.data) {
-
-          setState('ErrorNotFound');
-          setFoundNlu(false);
-          console.log('Error: no existe una estructura con el nombre ' + name + '');
-        
-        } else {
-
-          setState('Neutral');
-          setFoundNlu(true);
-          dispatch(actions.data(response.data));
-          document.getElementById("outlined-basic-text").value = response.data.text;
-        }
-      })
-      .catch(error => {
-        let errorMessage = error.response.data.name;
-        setState('ErrorFieldIsEmpty');
-        setFoundNlu(false);
-        dispatch(actions.name(''));
-        console.log(errorMessage);
-      }
-    );
-
-    } catch (e) {
-
-      throw e;
-    }
-  }
+  const id = useSelector((store) => store.nlu.id);
+  const state = useSelector((store) => store.state.state);
 
   const deleteNLU = (event) => {
     
@@ -63,24 +21,24 @@ const EliminarNLU = () => {
     axios
       .delete(url + "nlu_structure/" + id)
       .then(returnedNLU => {
-        setState('Success');
+        dispatch(stateActions.state('Success'));
+        dispatch(nluActions.data({id: '', name: '', text: ''}));
         event.target.reset();
-        setFoundNlu(false);
       })
       .catch(error => {
         errorMessage = error;
-        setState('Error');
+        dispatch(stateActions.state('Error'));
         console.log(error);
         event.target.reset();
       })
   }
 
   const handleNluChangeName = (event) => {
-    dispatch(actions.name(event.target.value));
+    dispatch(nluActions.name(event.target.value));
   }
 
   const handleNluChangeText = (event) => {
-    dispatch(actions.text(event.target.value));
+    dispatch(nluActions.text(event.target.value));
   }
 
   return (
@@ -88,8 +46,6 @@ const EliminarNLU = () => {
     <div>
       <h1>Eliminar NLU</h1>
       <FormName onSubmit={deleteNLU} 
-                onSearch={searchNLU}
-                foundNlu={foundNlu}
                 handleNluChangeName={handleNluChangeName}
                 handleNluChangeText={handleNluChangeText} />
       

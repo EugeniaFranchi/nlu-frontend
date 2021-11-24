@@ -1,17 +1,10 @@
 const initialState = { id: '', name: '', text: '' };
 
-export function editorReducer(state = initialState, action) {
+export function nluReducer(state = initialState, action) {
   switch (action.type) {
-    /*
-    case "DATOS":
-      return {
-        ...state,
-        payload: action.payload
-      };
-    */
     case "DATA":
       return {
-        id: action.payload._id,
+        id: action.payload.id,
         name: action.payload.name,
         text: action.payload.text
       };
