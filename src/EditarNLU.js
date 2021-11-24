@@ -43,18 +43,10 @@ const EditarNLU = () => {
         
         } else {
 
-          //console.log(JSON.stringify(response.data));
-          dispatch(actions.data(response.data));
-
-          // Deshabilitar botón de busqueda
-          setFoundNlu(true);
-          // Habilitar input de texto
-          // Que input de texto muestre text
-
-
-          document.getElementById("outlined-basic-text").value = response.data.text;
-
           setState('Neutral');
+          setFoundNlu(true);
+          dispatch(actions.data(response.data));
+          document.getElementById("outlined-basic-text").value = response.data.text;
         }
       })
       .catch(function (error) {
@@ -76,7 +68,6 @@ const EditarNLU = () => {
     event.preventDefault();
   
     axios
-      //.put(url + "nlu_structure", { name: name, text: text, id: id})
       .put(url + "nlu_structure?name=" + name + "&text=" + text + "&id=" + id)
       .then(returnedNLU => {
 
@@ -84,19 +75,12 @@ const EditarNLU = () => {
         console.log("Estructura editada sin problemas.");
         setFoundNlu(false);
 
-        //console.log("id: ", id);
-        //console.log("name: ", name);
-        //console.log("text: ", text);
         event.target.reset();
       })
       .catch(error => {
         const errorMessage = error.response.data.name;
         setState('ErrorDuplicate');
         console.log(errorMessage);
-        event.target.reset();
-        //console.log("id: ", id);
-        //console.log("name: ", name);
-        //console.log("text: ", text);
       })
   }
 
