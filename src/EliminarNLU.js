@@ -7,23 +7,11 @@ import axios from "axios";
 import url from "./index.js";
 import "./styles.css";
 
-let errorMessage = '';
-
-class ErrorNameDoesNotExist extends Error {
-    
-  constructor(name) {
-      
-      super();
-      this.name = 'Error: no existe una estructura con el nombre ' + name + '';
-      //Error.captureStackTrace(this, this.constructor);
-  }
-}
 
 const EliminarNLU = () => {
 
   const [state, setState] = useState('');
   const [foundNlu, setFoundNlu] = useState(false);
-  const [deleteNluId, setDeleteNluId] = useState("");
   const dispatch = useDispatch();
   const id = useSelector((store) => store.editor.id);
   const name = useSelector((store) => store.editor.name);
@@ -41,31 +29,24 @@ const EliminarNLU = () => {
                 
         if(!response.data) {
 
-          throw new ErrorNameDoesNotExist(name);
+          setState('ErrorNotFound');
+          setFoundNlu(false);
+          console.log('Error: no existe una estructura con el nombre ' + name + '');
         
         } else {
 
-          //console.log(JSON.stringify(response.data));
-          dispatch(actions.data(response.data));
-
-          // Deshabilitar botón de busqueda
-          setFoundNlu(true);
-          // Habilitar input de texto
-          // Que input de texto muestre text
-
-          setDeleteNluId(response.data._id);
-
-
-          document.getElementById("outlined-basic-text").value = response.data.text;
-
           setState('Neutral');
+          setFoundNlu(true);
+          dispatch(actions.data(response.data));
+          document.getElementById("outlined-basic-text").value = response.data.text;
         }
       })
-      .catch(function (error) {
-
-        setState('ErrorNotFound');
+      .catch(error => {
+        let errorMessage = error.response.data.name;
+        setState('ErrorFieldIsEmpty');
         setFoundNlu(false);
-        console.log(error);
+        dispatch(actions.name(''));
+        console.log(errorMessage);
       }
     );
 
@@ -80,11 +61,9 @@ const EliminarNLU = () => {
     event.preventDefault()
   
     axios
-      .delete(url + "nlu_structure/" + deleteNluId)
+      .delete(url + "nlu_structure/" + id)
       .then(returnedNLU => {
-        //console.log("Se eliminó con éxito el nlu: " + returnedNLU.data.name);
         setState('Success');
-        setDeleteNluId("");
         event.target.reset();
         setFoundNlu(false);
       })
@@ -126,6 +105,14 @@ const EliminarNLU = () => {
         <div>
           <Alert variant="outlined" severity="error">
             Error: no se encontró una estructura con ese nombre.
+          </Alert>
+        </div>
+      }
+
+      {(state === 'ErrorFieldIsEmpty') &&
+        <div>
+          <Alert variant="outlined" severity="error">
+            Error: no se ha ingresado nombre.
           </Alert>
         </div>
       }

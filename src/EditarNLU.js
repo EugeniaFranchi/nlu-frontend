@@ -7,15 +7,6 @@ import axios from "axios";
 import url from "./index.js";
 import "./styles.css";
 
-class ErrorNameDoesNotExist extends Error {
-    
-  constructor(name) {
-      
-      super();
-      this.name = 'Error: no existe una estructura con el nombre ' + name + '';
-      //Error.captureStackTrace(this, this.constructor);
-  }
-}
 
 const EditarNLU = () => {
   
@@ -39,7 +30,9 @@ const EditarNLU = () => {
                 
         if(!response.data) {
 
-          throw new ErrorNameDoesNotExist(name);
+          setState('ErrorNotFound');
+          setFoundNlu(false);
+          console.log('Error: no existe una estructura con el nombre ' + name + '');
         
         } else {
 
@@ -49,11 +42,12 @@ const EditarNLU = () => {
           document.getElementById("outlined-basic-text").value = response.data.text;
         }
       })
-      .catch(function (error) {
-
-        setState('ErrorNotFound');
+      .catch(error => {
+        let errorMessage = error.response.data.name;
+        setState('ErrorFieldIsEmpty');
         setFoundNlu(false);
-        console.log(error);
+        dispatch(actions.name(''));
+        console.log(errorMessage);
       }
     );
 
