@@ -3,8 +3,11 @@ import TextField from '@mui/material/TextField';
 import Button from "@mui/material/Button";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Box from "@mui/material/Box";
+import SearchButton from "./searchButton";
+import { useSelector } from "react-redux";
 
-const FormName = ({onSubmit, onSearch, foundNlu, handleNluChangeName, handleNluChangeText}) => {
+const FormName = ({onSubmit, handleNluChangeName, handleNluChangeText}) => {
+  const id = useSelector((store) => store.nlu.id);
 
   return (
     <div>
@@ -17,15 +20,9 @@ const FormName = ({onSubmit, onSearch, foundNlu, handleNluChangeName, handleNluC
           </div>
         </div>
 
-
+        <SearchButton />
         <Box m={1} pt={2}>
-            <Button variant="contained" onClick={onSearch} disabled={foundNlu} >
-              Buscar
-            </Button>
-        </Box>
-
-        <Box m={1} pt={2}>
-          <Button variant="outlined" startIcon={<DeleteIcon />} type="submit" disabled={!foundNlu} >
+          <Button variant="outlined" startIcon={<DeleteIcon />} type="submit" disabled={(id == '')} >
             Eliminar NLU
           </Button>
         </Box>

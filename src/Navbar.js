@@ -1,13 +1,14 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route, Link, useLocation } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import VerNLUs from "./VerNLUs";
 import AgregarNLU from "./AgregarNLU";
 import EditarNLU from "./EditarNLU";
 import EliminarNLU from "./EliminarNLU";
-import LeerNombre from "./LeerPorNombre";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import logo from './img/logo.png';
+import * as stateActions from "./app/actions/StateActions";
 
 import './styles.css'
 
@@ -48,8 +49,13 @@ const NavbarList = () => {
 
 const NavbarButton = () => {
   const location = useLocation().pathname
+  const dispatch = useDispatch();
+  const resetState = () => {
+    dispatch(stateActions.state('Neutral'));
+  }
+
   return(
-    location === "/" ? null : <Button component={Link} to="/" variant="text">Volver</Button>
+    location === "/" ? null : <Button component={Link} onClick={resetState} to="/" variant="text">Volver</Button>
   )
 };
 
