@@ -5,7 +5,6 @@ import * as stateActions from "./app/actions/StateActions";
 import FormNameTextID from "./FormNameTextID";
 import Alert from "@mui/material/Alert";
 import axios from "axios";
-import url from "./index.js";
 import "./styles.css";
 
 
@@ -21,7 +20,7 @@ const EditarNLU = () => {
     event.preventDefault();
   
     axios
-      .put(url + "nlu_structure?name=" + name + "&text=" + text + "&id=" + id)
+      .put(process.env.REACT_APP_URL + "nlu_structure?name=" + name + "&text=" + text + "&id=" + id)
       .then(returnedNLU => {
 
         dispatch(stateActions.state('Success'));
