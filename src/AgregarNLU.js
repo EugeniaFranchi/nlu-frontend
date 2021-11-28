@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import FormNameText from "./FormNameText";
 import Alert from "@mui/material/Alert";
 import axios from "axios";
-import url from "./index.js";
 import "./styles.css";
 
 let errorMessage = '';
@@ -17,7 +16,7 @@ const AgregarNLU = () => {
     event.preventDefault();
 
     axios
-      .post(url + "nlu_structure", null, { params: newNlu})
+      .post(process.env.REACT_APP_URL + "nlu_structure", null, { params: newNlu})
       .then(returnedNLU => {
         setNewNlu({});
         setState('Success');
