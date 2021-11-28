@@ -9,7 +9,3 @@ ReactDOM.render(
   </Provider>,
   document.getElementById("root")
 );
-
-const url = "http://localhost:8080/";
-
-export default url;
