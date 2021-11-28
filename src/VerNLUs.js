@@ -46,7 +46,7 @@ const VerNLUs = () => {
 
   useEffect(() => {
     axios
-      .get(url + "nlu_structures")
+      .get(REACT_APP_URL + "nlu_structures")
       .then((response) => {
         // handle success
         setNlus(response.data);
