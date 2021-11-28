@@ -5,7 +5,6 @@ import * as stateActions from "./app/actions/StateActions";
 import FormName from "./FormName";
 import Alert from "@mui/material/Alert";
 import axios from "axios";
-import url from "./index.js";
 import "./styles.css";
 
 
@@ -19,7 +18,7 @@ const EliminarNLU = () => {
     event.preventDefault()
   
     axios
-      .delete(url + "nlu_structure/" + id)
+      .delete(process.env.REACT_APP_URL + "nlu_structure/" + id)
       .then(returnedNLU => {
         dispatch(stateActions.state('Success'));
         dispatch(nluActions.data({id: '', name: '', text: ''}));
