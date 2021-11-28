@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from "react-redux";
 import * as nluActions from "./app/actions/NluActions";
 import * as stateActions from "./app/actions/StateActions";
 import axios from "axios";
-import url from "./index.js";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 
@@ -19,7 +18,7 @@ const SearchButton = () => {
     try{
       
       axios
-      .get(url + "nlu_structure_name?name="+ name)
+      .get(process.env.REACT_APP_URL + "nlu_structure_name?name="+ name)
       .then(response => {
         
         if(!response.data) {
